@@ -1,4 +1,4 @@
-
+PImage img;
 Astro[] system = new Astro[23];
 
 class Point {
@@ -45,13 +45,13 @@ class Astro {
   
   void display () {
     pushMatrix();
-    stroke(255, 0, 0);
+    stroke(random(200, 55), random(200, 55), random(200, 55));
     if (orbit_astro != null)
       translate(orbit_astro.position.x, orbit_astro.position.y, orbit_astro.position.z);
       
     position = rotar_point(position);
     rotateZ(gr_to_rd(inclinacion_orbital));
-    translate(position.x, position.y, position.z);
+    translate(position.x, position.y, position.z + 200);
     sphere(size);
     popMatrix();
   }
@@ -63,7 +63,8 @@ class Astro {
 void setup() {
   size(1000, 1000, P3D);
   background(0);
-  
+  img=loadImage ("cascadaMedusa.jpg");
+
   //star
   Astro center = new Astro(0, new Point(0, 0, 0), 0, 0);
   
@@ -165,8 +166,13 @@ void display(){
 }
 
 void draw () {
-  background(0);
-  translate(500, 500, -100);
+  pushMatrix();
+  translate(-2000, -2000, -2000);
+  image(img, 0, 0, width*5, height*5);
+  popMatrix();
+  
+  //background(0);
+  translate(500, 400, 300);
   rotateX(gr_to_rd(-30));
   display();
   delay(30);
