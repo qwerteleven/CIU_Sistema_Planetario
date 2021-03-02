@@ -1,6 +1,12 @@
 PImage img;
 Astro[] system = new Astro[23];
 
+
+import gifAnimation.*;
+GifMaker gifExport;
+int frames = 0;
+int totalFrames = 60;
+
 class Point {
 
   float x, y, z;
@@ -24,6 +30,7 @@ class Astro {
   float velocidad;
   float size;
   float inclinacion_orbital;
+  String name = "";
   
   Astro(float velocidad_angular, Point position, float size, float inclinacion_orbital) {
     this.velocidad = velocidad_angular;
@@ -39,13 +46,17 @@ class Astro {
     return new Point(x_, y_, z_);
   }
   
+  void set_name(String name) {
+    this.name = name;
+  }
+  
   void set_orbit(Astro orbit_astro) {
     this.orbit_astro = orbit_astro;
   }
   
   void display () {
     pushMatrix();
-    stroke(random(200, 55), random(200, 55), random(200, 55));
+    stroke(240, 240, 240);
     if (orbit_astro != null)
       translate(orbit_astro.position.x, orbit_astro.position.y, orbit_astro.position.z);
       
@@ -53,6 +64,9 @@ class Astro {
     rotateZ(gr_to_rd(inclinacion_orbital));
     translate(position.x, position.y, position.z + 200);
     sphere(size);
+    textSize(24);
+    text(name, 10, 30); 
+    fill(255,0,0);
     popMatrix();
   }
   
@@ -61,10 +75,16 @@ class Astro {
 
 
 void setup() {
+  smooth();
   size(1000, 1000, P3D);
   background(0);
   img=loadImage ("cascadaMedusa.jpg");
-
+  
+  /*
+  gifExport = new GifMaker(this, "animation.gif", 100);
+  gifExport.setRepeat(0); 
+  **/
+   
   //star
   Astro center = new Astro(0, new Point(0, 0, 0), 0, 0);
   
@@ -72,6 +92,8 @@ void setup() {
   Astro sol_1 = new Astro(5.0, new Point(40, 0, 0), 10, 30);
   sol.set_orbit(center);
   sol_1.set_orbit(center);
+  sol.set_name("sol_0");
+  sol_1.set_name("sol_1");
   
   //planets
   Astro mercury = new Astro(17.404,  new Point(15.0, 0, 0), 0.5, 7);
@@ -82,6 +104,7 @@ void setup() {
   
   Astro earth = new Astro(10.244, new Point(40.0, 0, 0), 2, 0);
   earth.set_orbit(center);
+  earth.set_name("Tierra");
   
   Astro mars = new Astro(8.868, new Point(60.0, 0, 0), 3, 1);
   mars.set_orbit(center);
@@ -175,5 +198,23 @@ void draw () {
   translate(500, 400, 300);
   rotateX(gr_to_rd(-30));
   display();
-  delay(30);
+  delay(60);
+  /*
+  export();
+  export();
+  **/
+}
+
+
+void export() {
+  if(frames < totalFrames) {
+    gifExport.setDelay(20);
+    gifExport.addFrame();
+    frames++;
+  } else {
+    gifExport.finish();
+    frames++;
+    println("gif saved");
+    exit();
+  }
 }
