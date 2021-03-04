@@ -1,6 +1,6 @@
 # CIU_Sistema_Planetario
 
-![](animacion.gif)
+![](CIU_Sistema_planetario/animacion.gif)
 
 ```
 Autor Leopoldo lopez reveron 
